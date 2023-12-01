@@ -1,0 +1,44 @@
+﻿using AutoMapper;
+using MISA.WebFresher052023.Domain;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MISA.WebFresher052023.Application
+{
+    public abstract class BaseCodeService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto> :
+        BaseService<TEntity, TModel, TEntityDto, TEntityCreateDto, TEntityUpdateDto>,
+        IBaseCodeService<TEntityDto, TEntityCreateDto, TEntityUpdateDto>
+    {
+        #region Fields
+        protected readonly IBaseCodeRepository<TEntity, TModel> _baseCodeRepository;
+        #endregion
+
+        #region Constructors
+        protected BaseCodeService(
+            IBaseCodeRepository<TEntity, TModel> baseCodeRepository,
+            IUnitOfWork unitOfWork,
+            IMapper mapper
+            ) : base(baseCodeRepository, unitOfWork, mapper)
+        {
+            _baseCodeRepository = baseCodeRepository;
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Lấy mã mới
+        /// </summary>
+        /// <returns>Mã mới</returns>
+       
+        public async Task<string?> FindNewCodeAsync()
+        {
+            var newCode = await _baseCodeRepository.FindNewCodeAsync();
+
+            return newCode;
+        }
+        #endregion
+    }
+}
